@@ -8,11 +8,6 @@ import common.network.requests.UpdateRequest;
 import common.network.responses.UpdateResponse;
 
 import java.io.IOException;
-
-/**
- * Команда 'update'. Обновляет элемент коллекции.
- * @author maxbarsukov
- */
 public class Update extends Command {
   private final Console console;
   private final UDPClient client;

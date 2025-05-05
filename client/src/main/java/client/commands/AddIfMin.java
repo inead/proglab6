@@ -8,11 +8,6 @@ import common.network.requests.*;
 import common.network.responses.*;
 
 import java.io.IOException;
-
-/**
- * Команда 'add_if_min'. Добавляет новый элемент в коллекцию, если его цена меньше минимальной.
- * @author maxbarsukov
- */
 public class AddIfMin extends Command {
   private final Console console;
   private final UDPClient client;

@@ -13,10 +13,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Оперирует коллекцией.
- * @author maxbarsukov
- */
+
 public class ProductRepository {
   private Queue<Product> collection = new PriorityQueue<>();
   private LocalDateTime lastInitTime;

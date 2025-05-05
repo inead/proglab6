@@ -1,9 +1,5 @@
 package client.utility.console;
 
-/**
- * Консоль для ввода команд и вывода результата
- * @author maxbarsukov
- */
 public interface Console {
   void print(Object obj);
   void println(Object obj);

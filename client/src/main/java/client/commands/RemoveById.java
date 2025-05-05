@@ -7,11 +7,6 @@ import common.network.requests.*;
 import common.network.responses.*;
 
 import java.io.IOException;
-
-/**
- * Команда 'remove_by_id'. Удаляет элемент из коллекции.
- * @author maxbarsukov
- */
 public class RemoveById extends Command {
   private final Console console;
   private final UDPClient client;

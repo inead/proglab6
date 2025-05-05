@@ -3,11 +3,6 @@ package server.commands;
 import common.network.requests.Request;
 import common.network.responses.*;
 import server.repositories.ProductRepository;
-
-/**
- * Команда 'show'. Выводит все элементы коллекции.
- * @author maxbarsukov
- */
 public class Show extends Command {
   private final ProductRepository productRepository;
 

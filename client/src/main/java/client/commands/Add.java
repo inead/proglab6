@@ -9,10 +9,6 @@ import common.network.responses.*;
 
 import java.io.IOException;
 
-/**
- * Команда 'add'. Добавляет новый элемент в коллекцию.
- * @author maxbarsukov
- */
 public class Add extends Command {
   private final Console console;
   private final UDPClient client;

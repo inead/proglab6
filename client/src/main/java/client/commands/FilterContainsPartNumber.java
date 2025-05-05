@@ -7,11 +7,6 @@ import common.network.requests.*;
 import common.network.responses.*;
 
 import java.io.IOException;
-
-/**
- * Команда 'filter_contains_part_number'. Фильтрация продуктов по полю partNumber.
- * @author maxbarsukov
- */
 public class FilterContainsPartNumber extends Command {
   private final Console console;
   private final UDPClient client;

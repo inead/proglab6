@@ -9,10 +9,6 @@ import common.network.responses.*;
 
 import java.io.IOException;
 
-/**
- * Команда 'sum_of_price'. Сумма цен всех продуктов.
- * @author maxbarsukov
- */
 public class SumOfPrice extends Command {
   private final Console console;
   private final UDPClient client;

@@ -4,10 +4,7 @@ import common.network.requests.*;
 import common.network.responses.*;
 import server.repositories.ProductRepository;
 
-/**
- * Команда 'add'. Добавляет новый элемент в коллекцию.
- * @author maxbarsukov
- */
+
 public class Add extends Command {
   private final ProductRepository productRepository;
 

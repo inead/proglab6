@@ -5,10 +5,6 @@ import common.network.requests.*;
 import common.network.responses.*;
 import server.repositories.ProductRepository;
 
-/**
- * Команда 'add_if_max'. Добавляет новый элемент в коллекцию, если его цена выше максимальной.
- * @author maxbarsukov
- */
 public class AddIfMax extends Command {
   private final ProductRepository productRepository;
 

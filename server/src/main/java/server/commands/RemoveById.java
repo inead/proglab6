@@ -4,10 +4,6 @@ import common.network.requests.*;
 import common.network.responses.*;
 import server.repositories.ProductRepository;
 
-/**
- * Команда 'remove_by_id'. Удаляет элемент из коллекции.
- * @author maxbarsukov
- */
 public class RemoveById extends Command {
   private final ProductRepository productRepository;
 

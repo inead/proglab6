@@ -15,11 +15,6 @@ import java.util.PriorityQueue;
 import common.domain.Product;
 import server.App;
 import server.utility.LocalDateAdapter;
-
-/**
- * Использует файл для сохранения и загрузки коллекции.
- * @author maxbarsukov
- */
 public class DumpManager {
   private final Gson gson = new GsonBuilder()
     .setPrettyPrinting()

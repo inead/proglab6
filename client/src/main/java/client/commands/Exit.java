@@ -1,11 +1,6 @@
 package client.commands;
 
 import client.utility.console.Console;
-
-/**
- * Команда 'exit'. Завершает выполнение.
- * @author maxbarsukov
- */
 public class Exit extends Command {
   private final Console console;
 

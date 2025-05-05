@@ -4,10 +4,6 @@ import common.network.requests.Request;
 import common.network.responses.*;
 import server.repositories.ProductRepository;
 
-/**
- * Команда 'info'. Выводит информацию о коллекции.
- * @author maxbarsukov
- */
 public class Info extends Command {
   private final ProductRepository productRepository;
 

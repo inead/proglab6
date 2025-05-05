@@ -3,10 +3,6 @@ package server.commands;
 import common.network.requests.Request;
 import common.network.responses.Response;
 
-/**
- * Интерфейс для всех выполняемых команд.
- * @author maxbarsukov
- */
 public interface Executable {
   /**
    * Выполнить что-либо.

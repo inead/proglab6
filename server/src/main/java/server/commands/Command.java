@@ -2,10 +2,6 @@ package server.commands;
 
 import java.util.Objects;
 
-/**
- * Абстрактная команда с именем и описанием
- * @author maxbarsukov
- */
 public abstract class Command implements Describable, Executable {
   private final String name;
   private final String description;

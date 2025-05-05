@@ -10,10 +10,6 @@ import client.utility.console.StandardConsole;
 import java.io.IOException;
 import java.net.InetAddress;
 
-/**
- * Главный класс клиентского приложения.
- * @author maxbarsukov
- */
 public class App {
   private static final int PORT = 23586;
   public static final Logger logger = LogManager.getLogger("ClientLogger");

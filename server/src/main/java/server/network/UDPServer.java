@@ -18,10 +18,6 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.SocketException;
 
-/**
- * UDP обработчик запросов
- * @author maxbarsukov
- */
 abstract class UDPServer {
   private final InetSocketAddress addr;
   private final CommandHandler commandHandler;

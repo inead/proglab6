@@ -3,11 +3,6 @@ package server.commands;
 import common.network.requests.Request;
 import common.network.responses.*;
 import server.managers.CommandManager;
-
-/**
- * Команда 'help'. Выводит справку по доступным командам
- * @author maxbarsukov
- */
 public class Help extends Command {
   private final CommandManager commandManager;
 

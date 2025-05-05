@@ -5,10 +5,6 @@ import server.commands.Command;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Управляет командами.
- * @author maxbarsukov
- */
 public class CommandManager {
   private final Map<String, Command> commands = new HashMap<>();
 

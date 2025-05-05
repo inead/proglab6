@@ -3,11 +3,6 @@ package server.commands;
 import common.network.requests.*;
 import common.network.responses.*;
 import server.repositories.ProductRepository;
-
-/**
- * Команда 'update'. Обновляет элемент коллекции.
- * @author maxbarsukov
- */
 public class Update extends Command {
   private final ProductRepository productRepository;
 

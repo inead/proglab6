@@ -1,9 +1,5 @@
 package client.utility.console;
 
-/**
- * Для ввода команд и вывода результата
- * @author maxbarsukov
- */
 public class StandardConsole implements Console {
   private static final String PS1 = "$ ";
   private static final String PS2 = "> ";

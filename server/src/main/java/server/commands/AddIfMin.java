@@ -5,10 +5,7 @@ import common.network.requests.*;
 import common.network.responses.*;
 import server.repositories.ProductRepository;
 
-/**
- * Команда 'add_if_min'. Добавляет новый элемент в коллекцию, если его цена меньше минимальной.
- * @author maxbarsukov
- */
+
 public class AddIfMin extends Command {
   private final ProductRepository productRepository;
 

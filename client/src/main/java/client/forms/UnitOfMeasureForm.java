@@ -7,10 +7,6 @@ import common.exceptions.*;
 
 import java.util.NoSuchElementException;
 
-/**
- * Форма меры весов.
- * @author maxbarsukov
- */
 public class UnitOfMeasureForm extends Form<UnitOfMeasure> {
   private final Console console;
 

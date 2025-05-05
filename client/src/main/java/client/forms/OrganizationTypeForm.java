@@ -7,10 +7,6 @@ import common.exceptions.*;
 
 import java.util.NoSuchElementException;
 
-/**
- * Форма типа организации.
- * @author maxbarsukov
- */
 public class OrganizationTypeForm extends Form<OrganizationType> {
   private final Console console;
 

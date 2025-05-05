@@ -9,10 +9,6 @@ import server.repositories.ProductRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Команда 'filter_by_price'. Фильтрация продуктов по цене.
- * @author maxbarsukov
- */
 public class FilterByPrice extends Command {
   private final ProductRepository productRepository;
 

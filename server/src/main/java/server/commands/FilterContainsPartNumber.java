@@ -9,10 +9,6 @@ import server.repositories.ProductRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Команда 'filter_contains_part_number'. Фильтрация продуктов по полю partNumber.
- * @author maxbarsukov
- */
 public class FilterContainsPartNumber extends Command {
   private final ProductRepository productRepository;
 

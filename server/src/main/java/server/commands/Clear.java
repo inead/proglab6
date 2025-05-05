@@ -5,10 +5,6 @@ import common.network.responses.ClearResponse;
 import common.network.responses.Response;
 import server.repositories.ProductRepository;
 
-/**
- * Команда 'clear'. Очищает коллекцию.
- * @author maxbarsukov
- */
 public class Clear extends Command {
   private final ProductRepository productRepository;
 

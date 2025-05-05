@@ -16,10 +16,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-/**
- * Серверная часть приложения.
- * @author maxbarsukov
- */
+
 public class App {
   public static final int PORT = 23586;
 

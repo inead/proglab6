@@ -4,10 +4,6 @@ import common.network.requests.Request;
 import common.network.responses.*;
 import server.repositories.ProductRepository;
 
-/**
- * Команда 'head'. Выводит первый элемент коллекции.
- * @author maxbarsukov
- */
 public class Head extends Command {
   private final ProductRepository productRepository;
 

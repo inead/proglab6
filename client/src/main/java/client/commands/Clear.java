@@ -7,11 +7,6 @@ import common.network.requests.*;
 import common.network.responses.*;
 
 import java.io.IOException;
-
-/**
- * Команда 'clear'. Очищает коллекцию.
- * @author maxbarsukov
- */
 public class Clear extends Command {
   private final Console console;
   private final UDPClient client;
