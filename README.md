@@ -70,3 +70,4 @@
 9. Шаблоны проектирования: Decorator, Iterator, Factory method, Command, Flyweight, Interpreter, Singleton, Strategy, Adapter, Facade, Proxy.
 # lab_6
 # lab_6
+# lab_6
