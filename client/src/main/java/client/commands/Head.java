@@ -7,6 +7,11 @@ import common.network.requests.*;
 import common.network.responses.*;
 
 import java.io.IOException;
+
+/**
+ * Команда 'head'. Выводит первый элемент коллекции.
+ * @author maxbarsukov
+ */
 public class Head extends Command {
   private final Console console;
   private final UDPClient client;

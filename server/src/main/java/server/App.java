@@ -2,34 +2,33 @@ package server;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import server.handlers.CommandHandler;
 import server.managers.DumpManager;
 import server.managers.CommandManager;
 import server.network.UDPDatagramServer;
 import server.repositories.ProductRepository;
 import server.commands.*;
-
 import common.utility.Commands;
 
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-
+import java.nio.file.Paths;
 
 public class App {
   public static final int PORT = 23586;
+  public static final String DATA_FILE = "products.json"; // Имя файла с коллекцией
 
   public static Logger logger = LogManager.getLogger("ServerLogger");
 
   public static void main(String[] args) {
-    if (args.length == 0) {
-      System.out.println("Введите имя загружаемого файла как аргумент командной строки");
-      System.exit(1);
-    }
+    // Получаем путь к файлу относительно расположения проекта
+    String filePath = Paths.get("").toAbsolutePath().resolve(DATA_FILE).toString();
+    logger.info("Используется файл данных: " + filePath);
 
-    var dumpManager = new DumpManager(args[0]);
+    var dumpManager = new DumpManager(filePath);
     var repository = new ProductRepository(dumpManager);
+
     if(!repository.validateAll()) {
       logger.fatal("Невалидные продукты в загруженном файле!");
       System.exit(2);
@@ -54,11 +53,14 @@ public class App {
     }};
 
     try {
-      var server = new UDPDatagramServer(InetAddress.getLocalHost(), PORT, new CommandHandler(commandManager));
+      // Явно указываем 127.0.0.1 для IPv4
+      var server = new UDPDatagramServer(InetAddress.getByName("127.0.0.1"), PORT, new CommandHandler(commandManager));
+      logger.info("Сервер запущен на 127.0.0.1:" + PORT); // Логируем адрес
+
       server.setAfterHook(repository::save);
       server.run();
     } catch (SocketException e) {
-      logger.fatal("Случилась ошибка сокета", e);
+      logger.fatal("Ошибка сокета. Возможно, порт " + PORT + " уже занят.", e);
     } catch (UnknownHostException e) {
       logger.fatal("Неизвестный хост", e);
     }

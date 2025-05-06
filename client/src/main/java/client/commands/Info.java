@@ -6,6 +6,11 @@ import common.network.requests.InfoRequest;
 import common.network.responses.InfoResponse;
 
 import java.io.IOException;
+
+/**
+ * Команда 'info'. Выводит информацию о коллекции.
+ * @author maxbarsukov
+ */
 public class Info extends Command {
   private final Console console;
   private final UDPClient client;

@@ -2,6 +2,10 @@ package client.commands;
 
 import java.util.Objects;
 
+/**
+ * Абстрактная команда с именем и описанием
+ * @author maxbarsukov
+ */
 public abstract class Command {
   private final String name;
 

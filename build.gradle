@@ -1,57 +1,89 @@
-subprojects {
+plugins {
+    id 'java'
+    id 'application'
+}
+
+allprojects {
     apply plugin: 'java'
     repositories {
         mavenCentral()
+    }
+
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
+}
+
+subprojects {
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
     }
 }
 
 project(':server') {
     apply plugin: 'application'
+
     mainClassName = 'server.App'
+
+    // Конфигурация запуска сервера
+    run {
+        args = ['data.json'] // Аргумент по умолчанию
+        standardInput = System.in
+        jvmArgs = ['-Dfile.encoding=UTF-8']
+    }
+
     dependencies {
         implementation project(':common')
         implementation 'com.google.code.gson:gson:2.10.1'
         implementation 'com.google.guava:guava:31.1-jre'
         implementation 'org.apache.commons:commons-lang3:3.12.0'
-
         implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
         implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
     }
 
     jar {
-        manifest.attributes(
-            'Main-Class': 'server.App',
-            'Implementation-Title': 'Gradle'
-        )
+        manifest {
+            attributes(
+                'Main-Class': 'server.App',
+                'Implementation-Title': 'Server Application',
+                'Implementation-Version': archiveVersion
+            )
+        }
     }
 }
 
 project(':client') {
     apply plugin: 'application'
+
     mainClassName = 'client.App'
+
+    run {
+        standardInput = System.in
+        jvmArgs = ['-Dfile.encoding=UTF-8']
+    }
+
     dependencies {
         implementation project(':common')
         implementation 'org.apache.commons:commons-lang3:3.12.0'
         implementation 'com.google.guava:guava:31.1-jre'
-
         implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
         implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
     }
-    run {
-        standardInput = System.in
-    }
+
     jar {
-        manifest.attributes(
-            'Main-Class': 'client.App',
-            'Implementation-Title': 'Gradle'
-        )
+        manifest {
+            attributes(
+                'Main-Class': 'client.App',
+                'Implementation-Title': 'Client Application',
+                'Implementation-Version': archiveVersion
+            )
+        }
     }
 }
 
 allprojects {
+    // Создание fatJar для всех подпроектов
     tasks.register('fatJar', Jar) {
         archiveClassifier = 'fat'
-
         from sourceSets.main.output
         dependsOn configurations.runtimeClasspath
 
@@ -62,7 +94,20 @@ allprojects {
         }
 
         from {
-            configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+            configurations.runtimeClasspath
+                .findAll { it.name.endsWith('jar') }
+                .collect { zipTree(it) }
         }
     }
+
+    // Настройка кодировки для всех задач JavaCompile
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+}
+
+// Общие настройки для корневого проекта
+task buildAll(dependsOn: [':server:fatJar', ':client:fatJar']) {
+    group = 'build'
+    description = 'Собирает fatJar для сервера и клиента'
 }

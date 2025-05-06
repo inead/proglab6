@@ -18,7 +18,8 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.SocketException;
 
-abstract class UDPServer {
+
+abstract class  UDPServer {
   private final InetSocketAddress addr;
   private final CommandHandler commandHandler;
   private Runnable afterHook;

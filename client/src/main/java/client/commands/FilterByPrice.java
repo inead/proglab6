@@ -7,6 +7,11 @@ import common.network.requests.*;
 import common.network.responses.*;
 
 import java.io.IOException;
+
+/**
+ * Команда 'filter_by_price'. Фильтрация продуктов по цене.
+ * @author maxbarsukov
+ */
 public class FilterByPrice extends Command {
   private final Console console;
   private final UDPClient client;

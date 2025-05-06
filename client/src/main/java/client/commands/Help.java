@@ -6,6 +6,11 @@ import common.network.requests.HelpRequest;
 import common.network.responses.HelpResponse;
 
 import java.io.IOException;
+
+/**
+ * Команда 'help'. Выводит справку по доступным командам
+ * @author maxbarsukov
+ */
 public class Help extends Command {
   private final Console console;
   private final UDPClient client;

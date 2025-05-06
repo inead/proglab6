@@ -15,6 +15,7 @@ import java.util.PriorityQueue;
 import common.domain.Product;
 import server.App;
 import server.utility.LocalDateAdapter;
+
 public class DumpManager {
   private final Gson gson = new GsonBuilder()
     .setPrettyPrinting()

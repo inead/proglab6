@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
 public class ProductRepository {
   private Queue<Product> collection = new PriorityQueue<>();
   private LocalDateTime lastInitTime;

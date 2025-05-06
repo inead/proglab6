@@ -5,6 +5,7 @@ import common.network.responses.ClearResponse;
 import common.network.responses.Response;
 import server.repositories.ProductRepository;
 
+
 public class Clear extends Command {
   private final ProductRepository productRepository;
 

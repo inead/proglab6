@@ -4,6 +4,7 @@ import common.domain.Product;
 import common.network.requests.Request;
 import common.network.responses.*;
 import server.repositories.ProductRepository;
+
 public class SumOfPrice extends Command {
   private final ProductRepository productRepository;
 

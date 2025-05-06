@@ -3,33 +3,64 @@ package client.network;
 import client.App;
 import common.network.requests.Request;
 import common.network.responses.Response;
-
 import com.google.common.primitives.Bytes;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.Logger;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
+import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class UDPClient {
   private final int PACKET_SIZE = 1024;
   private final int DATA_SIZE = PACKET_SIZE - 1;
+  private final int DEFAULT_TIMEOUT_MS = 5000;
 
   private final DatagramChannel client;
   private final InetSocketAddress addr;
-
   private final Logger logger = App.logger;
+  private int timeoutMs;
 
   public UDPClient(InetAddress address, int port) throws IOException {
+    this(address, port, 5000);
+  }
+
+  public UDPClient(InetAddress address, int port, int timeoutMs) throws IOException {
     this.addr = new InetSocketAddress(address, port);
     this.client = DatagramChannel.open().bind(null).connect(addr);
     this.client.configureBlocking(false);
-    logger.info("DatagramChannel подключен к " + addr);
+    this.timeoutMs = timeoutMs;
+    logger.info("DatagramChannel подключен к " + addr + " с таймаутом " + timeoutMs + " мс");
+  }
+
+  public boolean testConnection() {
+    try {
+      byte[] testPacket = "PING".getBytes();
+      sendData(testPacket);
+
+      long startTime = System.currentTimeMillis();
+      while (System.currentTimeMillis() - startTime < timeoutMs) {
+        byte[] response = tryReceive();
+        if (response != null && new String(response).equals("PONG")) {
+          return true;
+        }
+        TimeUnit.MILLISECONDS.sleep(100);
+      }
+      return false;
+    } catch (IOException | InterruptedException e) {
+      logger.error("Ошибка проверки соединения", e);
+      return false;
+    }
+  }
+
+  private byte[] tryReceive() throws IOException {
+    ByteBuffer buffer = ByteBuffer.allocate(PACKET_SIZE);
+    SocketAddress address = client.receive(buffer);
+    return address != null ? buffer.array() : null;
   }
 
   public Response sendAndReceiveCommand(Request request) throws IOException {
@@ -37,67 +68,75 @@ public class UDPClient {
     var responseBytes = sendAndReceiveData(data);
 
     Response response = SerializationUtils.deserialize(responseBytes);
-    logger.info("Получен ответ от сервера:  " + response);
+    logger.info("Получен ответ от сервера: " + response);
     return response;
   }
 
   private void sendData(byte[] data) throws IOException {
-    byte[][] ret = new byte[(int)Math.ceil(data.length / (double)DATA_SIZE)][DATA_SIZE];
+    byte[][] chunks = splitIntoChunks(data);
+    logger.info("Отправляется " + chunks.length + " чанков...");
 
-    int start = 0;
-    for(int i = 0; i < ret.length; i++) {
-      ret[i] = Arrays.copyOfRange(data, start, start + DATA_SIZE);
-      start += DATA_SIZE;
+    for (int i = 0; i < chunks.length; i++) {
+      byte lastByte = (byte) (i == chunks.length - 1 ? 1 : 0);
+      byte[] chunk = Bytes.concat(chunks[i], new byte[]{lastByte});
+      client.send(ByteBuffer.wrap(chunk), addr);
+      logger.info("Чанк " + (i + 1) + "/" + chunks.length + " отправлен");
     }
+    logger.info("Отправка данных завершена");
+  }
 
-    logger.info("Отправляется " + ret.length + " чанков...");
+  private byte[][] splitIntoChunks(byte[] data) {
+    int chunkCount = (int) Math.ceil(data.length / (double) DATA_SIZE);
+    byte[][] chunks = new byte[chunkCount][];
 
-    for(int i = 0; i < ret.length; i++) {
-      var chunk = ret[i];
-      if (i == ret.length - 1) {
-        var lastChunk = Bytes.concat(chunk, new byte[]{1});
-        client.send(ByteBuffer.wrap(lastChunk), addr);
-        logger.info("Последний чанк размером " + lastChunk.length + " отправлен на сервер.");
-      } else {
-        var answer = Bytes.concat(chunk, new byte[]{0});
-        client.send(ByteBuffer.wrap(answer), addr);
-        logger.info("Чанк размером " + answer.length + " отправлен на сервер.");
-      }
+    for (int i = 0; i < chunkCount; i++) {
+      int start = i * DATA_SIZE;
+      int end = Math.min(start + DATA_SIZE, data.length);
+      chunks[i] = Arrays.copyOfRange(data, start, end);
     }
-
-    logger.info("Отправка данных завершена.");
+    return chunks;
   }
 
   private byte[] receiveData() throws IOException {
-    var received = false;
-    var result = new byte[0];
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    boolean receivedLast = false;
+    long startTime = System.currentTimeMillis();
 
-    while(!received) {
-      var data = receiveData(PACKET_SIZE);
-      logger.info("Получено \"" + new String(data) + "\"");
-      logger.info("Последний байт: " + data[data.length - 1]);
+    while (!receivedLast && (System.currentTimeMillis() - startTime < timeoutMs)) {
+      ByteBuffer buffer = ByteBuffer.allocate(PACKET_SIZE);
+      SocketAddress address = client.receive(buffer);
 
-      if (data[data.length - 1] == 1) {
-        received = true;
-        logger.info("Получение данных окончено");
+      if (address != null) {
+        byte[] packet = buffer.array();
+        boolean isLast = packet[packet.length - 1] == 1;
+        baos.write(packet, 0, packet.length - 1);
+        receivedLast = isLast;
       }
-      result = Bytes.concat(result, Arrays.copyOf(data, data.length - 1));
     }
 
-    return result;
-  }
-
-  private byte[] receiveData(int bufferSize) throws IOException {
-    var buffer = ByteBuffer.allocate(bufferSize);
-    SocketAddress address = null;
-    while(address == null) {
-      address = client.receive(buffer);
+    if (!receivedLast) {
+      throw new SocketTimeoutException("Таймаут приема данных");
     }
-    return buffer.array();
+    return baos.toByteArray();
   }
 
   private byte[] sendAndReceiveData(byte[] data) throws IOException {
     sendData(data);
     return receiveData();
+  }
+
+  public void setTimeout(int timeoutMs) {
+    this.timeoutMs = timeoutMs;
+  }
+
+  public void close() {
+    try {
+      if (client != null && client.isOpen()) {
+        client.close();
+        logger.info("Соединение закрыто");
+      }
+    } catch (IOException e) {
+      logger.error("Ошибка при закрытии соединения", e);
+    }
   }
 }

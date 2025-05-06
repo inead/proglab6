@@ -2,6 +2,10 @@ package client.utility;
 
 import java.util.Scanner;
 
+/**
+ * Отвечает за режим ввода пользовательских данных
+ * @author maxbarsukov
+ */
 public class Interrogator {
   private static Scanner userScanner;
   private static boolean fileMode = false;

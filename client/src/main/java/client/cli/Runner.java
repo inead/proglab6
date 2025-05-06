@@ -14,6 +14,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+
+/**
+ * Класс, запускающий введенные пользователем команды.
+ * @author maxbarsukov
+ */
 public class Runner {
   public enum ExitCode {
     OK,

@@ -8,6 +8,10 @@ import common.exceptions.*;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
 
+/**
+ * Форма продукта.
+ * @author maxbarsukov
+ */
 public class ProductForm extends Form<Product> {
   private final Console console;
 

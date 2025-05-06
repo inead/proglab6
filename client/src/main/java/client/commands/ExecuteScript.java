@@ -2,6 +2,10 @@ package client.commands;
 
 import client.utility.console.Console;
 
+/**
+ * Команда 'execute_script'. Выполнить скрипт из файла.
+ * @author maxbarsukov
+ */
 public class ExecuteScript extends Command {
   private final Console console;
 

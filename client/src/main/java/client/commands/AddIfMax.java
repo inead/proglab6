@@ -8,6 +8,11 @@ import common.network.requests.*;
 import common.network.responses.*;
 
 import java.io.IOException;
+
+/**
+ * Команда 'add_if_max'. Добавляет новый элемент в коллекцию, если его цена выше максимальной.
+ * @author maxbarsukov
+ */
 public class AddIfMax extends Command {
   private final Console console;
   private final UDPClient client;
